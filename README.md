@@ -1,4 +1,4 @@
 # finance-tracker
 
-admin - naim@amin.com
+admin - naim@admin.com
 pass- naim
