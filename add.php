@@ -11,7 +11,7 @@ include 'db.php';
 
 $user_id = $_SESSION['user_id'];
 
-// Fetch user info for profile picture
+// user info for profile picture
 $stmt = $conn->prepare("SELECT profile_picture FROM users WHERE id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -19,7 +19,7 @@ $user_result = $stmt->get_result();
 $user_info = $user_result->fetch_assoc();
 $profile_pic = !empty($user_info['profile_picture']) ? 'uploads/' . htmlspecialchars($user_info['profile_picture']) : 'uploads/default.jpg';
 
-// Handle form submission
+//  form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $type = $_POST['type'];
     $category = htmlspecialchars(trim($_POST['category']));
@@ -32,7 +32,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_param("issdss", $user_id, $type, $category, $amount, $notes, $date);
 
         if ($stmt->execute()) {
-            header("Location: index.php");
+            echo "<script>
+        alert('Transaction added successfully!');
+        window.location.href = 'add.php';
+    </script>";
+          //  header("Location: add.php");
+            
             exit;
         } else {
             echo "<p style='color:red;'>Failed to add transaction: " . $conn->error . "</p>";

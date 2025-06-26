@@ -1,8 +1,8 @@
 <?php
 $host = "localhost";
-$dbname = "finance_tracker";  // your database name
-$username = "root";           // XAMPP default
-$password = "";               // XAMPP default (no password)
+$dbname = "finance_tracker";  
+$username = "root";           
+$password = "";               
 
 $conn = new mysqli($host, $username, $password, $dbname);
 

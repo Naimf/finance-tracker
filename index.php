@@ -9,25 +9,25 @@ include 'db.php';
 
 $user_id = $_SESSION['user_id'];
 
-// Fetch user info (for profile pic and username)
+
 $stmt = $conn->prepare("SELECT username, profile_picture FROM users WHERE id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 
-// --- Handle Delete Transaction ---
+/// trans delete
 if (isset($_GET['delete_tx_id'])) {
     $delete_id = intval($_GET['delete_tx_id']);
     $stmt = $conn->prepare("DELETE FROM transactions WHERE id = ? AND user_id = ?");
     $stmt->bind_param("ii", $delete_id, $user_id);
     $stmt->execute();
-    // redirect to avoid resubmission and to clear URL params
+    
     header("Location: index.php");
     exit;
 }
 
-// --- Handle Delete Account ---
+// acc dele
 if (isset($_GET['delete_account_id'])) {
     $delete_acc_id = intval($_GET['delete_account_id']);
     $stmt = $conn->prepare("DELETE FROM accounts WHERE id = ? AND user_id = ?");
@@ -37,7 +37,7 @@ if (isset($_GET['delete_account_id'])) {
     exit;
 }
 
-// --- Handle Add Account (POST) ---
+// add acc
 $account_msg = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_account'])) {
     $account_type = htmlspecialchars(trim($_POST['account_type']));
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_account'])) {
         $stmt = $conn->prepare("INSERT INTO accounts (user_id, account_type, account_name, account_number) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("isss", $user_id, $account_type, $account_name, $account_number);
         if ($stmt->execute()) {
-            // Show success alert after reload
+            
             $_SESSION['account_success'] = "Account added successfully.";
         } else {
             $_SESSION['account_error'] = "Failed to add account: " . $conn->error;
@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_account'])) {
     }
 }
 
-// --- Handle Filter/Search Transactions ---
+// Filter 
 $filter_category = $_GET['category'] ?? '';
 $filter_type = $_GET['type'] ?? '';
 $filter_date_from = $_GET['date_from'] ?? '';
@@ -75,7 +75,7 @@ if ($filter_date_from) $where_clauses[] = "date >= '" . $conn->real_escape_strin
 if ($filter_date_to) $where_clauses[] = "date <= '" . $conn->real_escape_string($filter_date_to) . "'";
 $where_sql = implode(' AND ', $where_clauses);
 
-// --- Monthly Summary ---
+//  Monthly Summary 
 $year = date('Y');
 $month = date('m');
 
@@ -91,7 +91,7 @@ $total_income = $res['total_income'] ?? 0;
 $total_expense = $res['total_expense'] ?? 0;
 $net_balance = $total_income - $total_expense;
 
-// --- Expense by category (pie chart) ---
+//  Expense by category (pie chart) 
 $category_data = [];
 $stmt = $conn->prepare("SELECT category, SUM(amount) as total FROM transactions 
     WHERE user_id = ? AND type = 'expense' AND MONTH(date) = ? AND YEAR(date) = ? 
@@ -103,7 +103,7 @@ while ($row = $result->fetch_assoc()) {
     $category_data[$row['category']] = (float)$row['total'];
 }
 
-// --- Monthly income/expense for bar chart ---
+//  Monthly income/expense for bar chart 
 $monthly_data = [];
 for ($i = 1; $i <= 12; $i++) {
     $stmt = $conn->prepare("SELECT 
@@ -120,14 +120,14 @@ for ($i = 1; $i <= 12; $i++) {
     ];
 }
 
-// --- Fetch Transactions ---
+// Fetch Transactions 
 $sql_transactions = "SELECT * FROM transactions WHERE $where_sql ORDER BY date DESC";
 $result_transactions = $conn->query($sql_transactions);
 
-// --- Fetch distinct categories for filter dropdown ---
+// Fetch distinct categories for filter dropdown 
 $categories_result = $conn->query("SELECT DISTINCT category FROM transactions WHERE user_id = $user_id");
 
-// --- Fetch accounts for current user ---
+//  Fetch accounts for current user 
 $stmt = $conn->prepare("SELECT * FROM accounts WHERE user_id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();

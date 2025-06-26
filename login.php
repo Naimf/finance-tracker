@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $stmt->get_result();
 
     if ($user = $result->fetch_assoc()) {
-        // Plain text password check (not recommended but as per your request)
+        /////////////////////////////////////////////////////////validation
         if ($user["password"] === $password) {
             $_SESSION["user_id"] = $user["id"];
             $_SESSION["username"] = $user["first_name"];
@@ -50,7 +50,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* Form card container */
         .form-card {
             background: white;
             padding: 30px 40px;
@@ -62,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             text-align: center;
         }
 
-        /* Project title */
+       
         .project-title {
             margin: 0 0 15px 0;
             font-size: 1.8rem;
@@ -70,13 +69,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             user-select: none;
         }
 
-        /* Headings */
+       
         h2 {
             margin-bottom: 20px;
             color: #333;
         }
 
-        /* Error message styling */
+        
         .error {
             background-color: #ffdede;
             color: #d93025;
@@ -87,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-size: 0.9rem;
         }
 
-        /* Form styling */
+       
         form {
             display: flex;
             flex-direction: column;
@@ -95,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             text-align: left;
         }
 
-        /* Labels */
+      
         label {
             font-weight: 600;
             color: #444;
@@ -104,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-size: 1rem;
         }
 
-        /* Inputs */
+        
         input[type="email"],
         input[type="password"] {
             margin-top: 6px;
@@ -123,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             box-shadow: 0 0 5px #52b69a66;
         }
 
-        /* Submit button */
+        
         button[type="submit"] {
             background-color: #52b69a;
             color: white;
@@ -140,7 +139,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             background-color: #409074;
         }
 
-        /* Bottom text */
+        
         p {
             font-size: 0.9rem;
             color: #555;

@@ -15,7 +15,7 @@ if (!isset($_GET['id'])) {
 $user_id = $_SESSION['user_id'];
 $transaction_id = intval($_GET['id']);
 
-// Delete only if transaction belongs to user
+
 $stmt = $conn->prepare("DELETE FROM transactions WHERE id = ? AND user_id = ?");
 $stmt->bind_param("ii", $transaction_id, $user_id);
 

@@ -6,7 +6,7 @@ $error = '';
 $success = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Sanitize inputs
+   
     $first_name = trim($_POST["first_name"]);
     $last_name = trim($_POST["last_name"]);
     $email = trim($_POST["email"]);
@@ -16,7 +16,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = trim($_POST["password"]);
     $confirm = trim($_POST["confirm_password"]);
 
-    // Basic validations
     if (empty($first_name) || empty($last_name) || empty($email) || empty($username) || empty($gender) || empty($dob) || empty($password) || empty($confirm)) {
         $error = "⚠️ Please fill in all fields.";
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -24,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif ($password !== $confirm) {
         $error = "⚠️ Passwords do not match.";
     } else {
-        // All good, insert into DB
+        
         $stmt = $conn->prepare("INSERT INTO users (first_name, last_name, email, username, gender, dob, password) VALUES (?, ?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("sssssss", $first_name, $last_name, $email, $username, $gender, $dob, $password);
 

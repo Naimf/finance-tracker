@@ -12,7 +12,7 @@ $user_id = $_SESSION['user_id'];
 $year = date('Y');
 $month = date('m');
 
-// Top bar
+
 echo "<div style='text-align:right; margin-bottom:10px;'>
         Logged in as <strong>{$_SESSION['username']}</strong> | 
         <a href='profile.php'>Profile</a> | 

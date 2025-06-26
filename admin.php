@@ -2,7 +2,7 @@
 session_start();
 include 'db.php';
 
-// Redirect non-admin users
+
 if (!isset($_SESSION['user_id']) || ($_SESSION['role'] ?? '') !== 'admin') {
     header("Location: login.php");
     exit;
@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_user'])) {
     exit;
 }
 
-// Handle user deletion
+// user deletion
 if (isset($_GET['delete_user_id'])) {
     $delete_id = intval($_GET['delete_user_id']);
     // Delete user and related data (optional: transactions, accounts)
@@ -42,20 +42,14 @@ if (isset($_GET['delete_user_id'])) {
     $stmt->bind_param("i", $delete_id);
     $stmt->execute();
 
-    // Optionally, delete user transactions and accounts (uncomment if needed)
-    // $stmt = $conn->prepare("DELETE FROM transactions WHERE user_id = ?");
-    // $stmt->bind_param("i", $delete_id);
-    // $stmt->execute();
-    // $stmt = $conn->prepare("DELETE FROM accounts WHERE user_id = ?");
-    // $stmt->bind_param("i", $delete_id);
-    // $stmt->execute();
+  
 
     $_SESSION['msg'] = "User deleted successfully.";
     header("Location: admin.php");
     exit;
 }
 
-// Fetch all users except admin(s)
+//////////////////////Normal login
 $stmt = $conn->prepare("SELECT * FROM users WHERE role != 'admin' ORDER BY id ASC");
 $stmt->execute();
 $result_users = $stmt->get_result();
